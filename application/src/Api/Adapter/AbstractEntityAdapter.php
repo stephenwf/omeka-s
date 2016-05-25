@@ -203,7 +203,6 @@ abstract class AbstractEntityAdapter extends AbstractAdapter implements
             ->select($entityClass)
             ->from($entityClass, $entityClass);
         $this->buildQuery($qb, $query);
-        $qb->groupBy("$entityClass.id");
 
         // Trigger the search.query event.
         $event = new Event(Event::API_SEARCH_QUERY, $this, [
@@ -218,7 +217,7 @@ abstract class AbstractEntityAdapter extends AbstractAdapter implements
         $this->limitQuery($qb, $query);
         $qb->addOrderBy("$entityClass.id", $query['sort_order']);
 
-        $paginator = new Paginator($qb, false);
+        $paginator = new Paginator($qb);
         $representations = [];
         foreach ($paginator as $entity) {
             if (is_array($entity)) {

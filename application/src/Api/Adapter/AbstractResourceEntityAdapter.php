@@ -14,6 +14,18 @@ abstract class AbstractResourceEntityAdapter extends AbstractEntityAdapter
      */
     public function buildQuery(QueryBuilder $qb, array $query)
     {
+        // Add fetch-joins to minimize queries.
+        $qb->addSelect(
+            'Omeka\Entity\User',
+            'Omeka\Entity\ResourceClass',
+            'Omeka\Entity\ResourceTemplate',
+            'Omeka\Entity\Value'
+        );
+        $qb->leftJoin($this->getEntityClass() . '.owner', 'Omeka\Entity\User');
+        $qb->leftJoin($this->getEntityClass() . '.resourceClass', 'Omeka\Entity\ResourceClass');
+        $qb->leftJoin($this->getEntityClass() . '.resourceTemplate', 'Omeka\Entity\ResourceTemplate');
+        $qb->leftJoin($this->getEntityClass() . '.values', 'Omeka\Entity\Value');
+
         $this->buildValueQuery($qb, $query);
         $this->buildPropertyQuery($qb, $query);
         $this->buildHasPropertyQuery($qb, $query);

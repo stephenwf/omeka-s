@@ -48,6 +48,14 @@ class ItemAdapter extends AbstractResourceEntityAdapter
      */
     public function buildQuery(QueryBuilder $qb, array $query)
     {
+        // Add fetch-joins to minimize queries.
+        $qb->addSelect(
+            'Omeka\Entity\Media',
+            'Omeka\Entity\ItemSet'
+        );
+        $qb->leftJoin($this->getEntityClass() . '.media', 'Omeka\Entity\Media');
+        $qb->leftJoin($this->getEntityClass() . '.itemSets', 'Omeka\Entity\ItemSet');
+
         parent::buildQuery($qb, $query);
 
         if (isset($query['id'])) {
