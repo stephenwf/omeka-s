@@ -20,7 +20,8 @@ class Item extends Resource
      *     mappedBy="item",
      *     orphanRemoval=true,
      *     cascade={"persist", "remove", "detach"},
-     *     indexBy="id"
+     *     indexBy="id",
+     *     fetch="EAGER"
      * )
      * @OrderBy({"position" = "ASC"})
      */
@@ -32,7 +33,12 @@ class Item extends Resource
     protected $siteBlockAttachments;
 
     /**
-     * @ManyToMany(targetEntity="ItemSet", inversedBy="items", indexBy="id")
+     * @ManyToMany(
+     *     targetEntity="ItemSet",
+     *     inversedBy="items",
+     *     indexBy="id",
+     *     fetch="EAGER"
+     * )
      * @JoinTable(name="item_item_set")
      */
     protected $itemSets;

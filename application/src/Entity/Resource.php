@@ -28,19 +28,29 @@ abstract class Resource extends AbstractEntity
     protected $id;
 
     /**
-     * @ManyToOne(targetEntity="User")
+     * @ManyToOne(
+     *     targetEntity="User",
+     *     fetch="EAGER"
+     * )
      * @JoinColumn(onDelete="SET NULL")
      */
     protected $owner;
 
     /**
-     * @ManyToOne(targetEntity="ResourceClass", inversedBy="resources")
+     * @ManyToOne(
+     *     targetEntity="ResourceClass",
+     *     inversedBy="resources",
+     *     fetch="EAGER"
+     * )
      * @JoinColumn(onDelete="SET NULL")
      */
     protected $resourceClass;
 
     /**
-     * @ManyToOne(targetEntity="ResourceTemplate")
+     * @ManyToOne(
+     *     targetEntity="ResourceTemplate",
+     *     fetch="EAGER"
+     * )
      * @JoinColumn(onDelete="SET NULL")
      */
     protected $resourceTemplate;
@@ -65,7 +75,8 @@ abstract class Resource extends AbstractEntity
      *     targetEntity="Value",
      *     mappedBy="resource",
      *     orphanRemoval=true,
-     *     cascade={"persist", "remove", "detach"}
+     *     cascade={"persist", "remove", "detach"},
+     *     fetch="EAGER"
      * )
      * @OrderBy({"id" = "ASC"})
      */
