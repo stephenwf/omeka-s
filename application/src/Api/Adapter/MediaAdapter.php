@@ -86,7 +86,7 @@ class MediaAdapter extends AbstractResourceEntityAdapter
             );
             $qb->andWhere($qb->expr()->eq(
                 "$siteAlias.id",
-                $this->createNamedParameter($qb, $query['site_id']))
+                $qb->createNamedParameter($query['site_id']))
             );
         }
     }

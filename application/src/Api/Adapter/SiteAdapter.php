@@ -241,7 +241,7 @@ class SiteAdapter extends AbstractEntityAdapter
             );
             $qb->andWhere($qb->expr()->eq(
                 "$userAlias.id",
-                $this->createNamedParameter($qb, $query['owner_id']))
+                $qb->createNamedParameter($query['owner_id']))
             );
         }
     }

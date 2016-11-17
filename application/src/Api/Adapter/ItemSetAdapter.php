@@ -63,7 +63,7 @@ class ItemSetAdapter extends AbstractResourceEntityAdapter
                         $expr,
                         $qb->expr()->eq(
                             'Omeka\Entity\ItemSet.owner',
-                            $this->createNamedParameter($qb, $identity->getId())
+                            $qb->createNamedParameter($identity->getId())
                         )
                     );
                 }
@@ -85,7 +85,7 @@ class ItemSetAdapter extends AbstractResourceEntityAdapter
             );
             $qb->andWhere($qb->expr()->eq(
                 "$siteItemSetsAlias.site",
-                $this->createNamedParameter($qb, $query['site_id']))
+                $qb->createNamedParameter($query['site_id']))
             );
             $qb->addOrderBy("$siteItemSetsAlias.position", 'ASC');
         }

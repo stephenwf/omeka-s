@@ -323,7 +323,7 @@ class Module extends AbstractModule
                 $expression,
                 $qb->expr()->eq(
                     "$itemAlias.owner",
-                    $adapter->createNamedParameter($qb, $identity)
+                    $qb->createNamedParameter($identity)
                 )
             );
         }
@@ -359,12 +359,12 @@ class Module extends AbstractModule
                 // Users can view all sites they own.
                 $qb->expr()->eq(
                     "Omeka\Entity\Site.owner",
-                    $adapter->createNamedParameter($qb, $identity)
+                    $qb->createNamedParameter($identity)
                 ),
                 // Users can view sites where they have a role (any role).
                 $qb->expr()->eq(
                     "$sitePermissionAlias.user",
-                    $adapter->createNamedParameter($qb, $identity)
+                    $qb->createNamedParameter($identity)
                 )
             );
         }

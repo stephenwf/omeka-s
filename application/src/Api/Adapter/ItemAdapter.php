@@ -66,7 +66,7 @@ class ItemAdapter extends AbstractResourceEntityAdapter
                 $qb->innerJoin(
                     $this->getEntityClass() . '.itemSets',
                     $itemSetAlias, 'WITH',
-                    $qb->expr()->in("$itemSetAlias.id", $this->createNamedParameter($qb, $itemSets))
+                    $qb->expr()->in("$itemSetAlias.id", $qb->createNamedParameter($itemSets))
                 );
             }
         }
@@ -110,7 +110,7 @@ class ItemAdapter extends AbstractResourceEntityAdapter
                 );
                 $qb->andWhere($qb->expr()->eq(
                     "$siteAlias.id",
-                    $this->createNamedParameter($qb, $query['site_id']))
+                    $qb->createNamedParameter($query['site_id']))
                 );
             }
         }

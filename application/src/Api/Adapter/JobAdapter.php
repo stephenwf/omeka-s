@@ -75,7 +75,7 @@ class JobAdapter extends AbstractEntityAdapter
         if (isset($query['class'])) {
             $qb->andWhere($qb->expr()->eq(
                 $this->getEntityClass() . ".class",
-                $this->createNamedParameter($qb, $query['class']))
+                $qb->createNamedParameter($query['class']))
             );
         }
     }

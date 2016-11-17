@@ -27,7 +27,7 @@ abstract class AbstractResourceEntityAdapter extends AbstractEntityAdapter
             );
             $qb->andWhere($qb->expr()->eq(
                 "$userAlias.id",
-                $this->createNamedParameter($qb, $query['owner_id']))
+                $qb->createNamedParameter($query['owner_id']))
             );
         }
 
@@ -39,7 +39,7 @@ abstract class AbstractResourceEntityAdapter extends AbstractEntityAdapter
             );
             $qb->andWhere($qb->expr()->eq(
                 "$resourceClassAlias.label",
-                $this->createNamedParameter($qb, $query['resource_class_label']))
+                $qb->createNamedParameter($query['resource_class_label']))
             );
         }
 
@@ -51,7 +51,7 @@ abstract class AbstractResourceEntityAdapter extends AbstractEntityAdapter
             );
             $qb->andWhere($qb->expr()->eq(
                 "$resourceClassAlias.id",
-                $this->createNamedParameter($qb, $query['resource_class_id']))
+                $qb->createNamedParameter($query['resource_class_id']))
             );
         }
 
@@ -63,7 +63,7 @@ abstract class AbstractResourceEntityAdapter extends AbstractEntityAdapter
             );
             $qb->andWhere($qb->expr()->eq(
                 "$resourceTemplateAlias.id",
-                $this->createNamedParameter($qb, $query['resource_template_id']))
+                $qb->createNamedParameter($query['resource_template_id']))
             );
         }
     }
@@ -195,7 +195,7 @@ abstract class AbstractResourceEntityAdapter extends AbstractEntityAdapter
                         case 'neq':
                             $positive = false;
                         case 'eq':
-                            $param = $this->createNamedParameter($qb, $value);
+                            $param = $qb->createNamedParameter($value);
                             $predicateExpr = $qb->expr()->orX(
                                 $qb->expr()->eq("$valuesAlias.value", $param),
                                 $qb->expr()->eq("$valuesAlias.uri", $param)
@@ -204,7 +204,7 @@ abstract class AbstractResourceEntityAdapter extends AbstractEntityAdapter
                         case 'nin':
                             $positive = false;
                         case 'in':
-                            $param = $this->createNamedParameter($qb, "%$value%");
+                            $param = $qb->createNamedParameter("%$value%");
                             $predicateExpr = $qb->expr()->orX(
                                 $qb->expr()->like("$valuesAlias.value", $param),
                                 $qb->expr()->like("$valuesAlias.uri", $param)
@@ -215,7 +215,7 @@ abstract class AbstractResourceEntityAdapter extends AbstractEntityAdapter
                         case 'res':
                             $predicateExpr = $qb->expr()->eq(
                                 "$valuesAlias.valueResource",
-                                $this->createNamedParameter($qb, $value)
+                                $qb->createNamedParameter($value)
                             );
                             break;
                         default:

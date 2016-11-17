@@ -7,6 +7,7 @@ use Omeka\Api\Exception;
 use Omeka\Api\Representation\ResourceReference;
 use Omeka\Api\Request;
 use Omeka\Api\Response;
+use Omeka\Db\QueryBuilder;
 use Omeka\Entity\User;
 use Omeka\Entity\EntityInterface;
 use Omeka\Stdlib\ErrorStore;
@@ -197,8 +198,7 @@ abstract class AbstractEntityAdapter extends AbstractAdapter implements EntityAd
 
         // Begin building the search query.
         $entityClass = $this->getEntityClass();
-        $qb = $this->getEntityManager()
-            ->createQueryBuilder()
+        $qb = new QueryBuilder($this->getEntityManager())
             ->select($entityClass)
             ->from($entityClass, $entityClass);
         $this->buildQuery($qb, $query);
@@ -475,12 +475,12 @@ abstract class AbstractEntityAdapter extends AbstractAdapter implements EntityAd
         }
 
         $entityClass = $this->getEntityClass();
-        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb = new QueryBuilder($this->getEntityManager());
         $qb->select($entityClass)->from($entityClass, $entityClass);
         foreach ($criteria as $field => $value) {
             $qb->andWhere($qb->expr()->eq(
                 "$entityClass.$field",
-                $this->createNamedParameter($qb, $value)
+                $qb->createNamedParameter($value)
             ));
         }
         $qb->setMaxResults(1);
@@ -499,24 +499,6 @@ abstract class AbstractEntityAdapter extends AbstractAdapter implements EntityAd
             ));
         }
         return $entity;
-    }
-
-    /**
-     * Create a unique named parameter for the query builder and bind a value to
-     * it.
-     *
-     * @param QueryBuilder $qb
-     * @param mixed $value The value to bind
-     * @param string $prefix The placeholder prefix
-     * @return string The placeholder
-     */
-    public function createNamedParameter(QueryBuilder $qb, $value,
-        $prefix = 'omeka_'
-    ) {
-        $placeholder = $prefix . $this->index;
-        $this->index++;
-        $qb->setParameter($placeholder, $value);
-        return ":$placeholder";
     }
 
     /**
@@ -553,7 +535,7 @@ abstract class AbstractEntityAdapter extends AbstractAdapter implements EntityAd
      */
     public function isUnique(EntityInterface $entity, array $criteria)
     {
-        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb = new QueryBuilder($this->getEntityManager());
         $qb->select('e.id')
             ->from($this->getEntityClass(), 'e');
 
@@ -562,14 +544,14 @@ abstract class AbstractEntityAdapter extends AbstractAdapter implements EntityAd
         if ($entity->getId()) {
             $qb->andWhere($qb->expr()->neq(
                 'e.id',
-                $this->createNamedParameter($qb, $entity->getId())
+                $qb->createNamedParameter($entity->getId())
             ));
         }
 
         foreach ($criteria as $field => $value) {
             $qb->andWhere($qb->expr()->eq(
                 "e.$field",
-                $this->createNamedParameter($qb, $value)
+                $qb->createNamedParameter($value)
             ));
         }
         return null === $qb->getQuery()->getOneOrNullResult();
